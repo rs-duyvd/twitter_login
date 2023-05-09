@@ -38,9 +38,9 @@ class TwitterLogin {
 
   /// constructor
   TwitterLogin({
-    required this.apiKey,
-    required this.apiSecretKey,
-    required this.redirectURI,
+    this.apiKey,
+    this.apiSecretKey,
+    this.redirectURI,
   });
 
   /// Logs the user
@@ -53,7 +53,7 @@ class TwitterLogin {
         redirectURI,
         forceLogin,
       );
-      String? resultURI = '';
+      String resultURI = '';
       final uri = Uri.parse(redirectURI);
       if (Platform.isIOS) {
         resultURI = await _channel.invokeMethod('authentication', {
@@ -82,7 +82,7 @@ class TwitterLogin {
         throw UnsupportedError('Not supported by this os.');
       }
       // The user closed the browser
-      if (resultURI!.isEmpty) {
+      if (resultURI.isEmpty) {
         throw CanceldByUserException();
       }
       final queries = Uri.splitQueryString(Uri.parse(resultURI).query);

@@ -18,7 +18,7 @@ const ACCOUNT_VERIFY_URI =
     'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true';
 
 ///
-String? generateAuthHeader(Map<String, dynamic> params) {
+String generateAuthHeader(Map<String, dynamic> params) {
   return 'OAuth ' +
       params.keys.map((k) {
         return '$k="${Uri.encodeComponent(params[k])}"';
@@ -26,7 +26,7 @@ String? generateAuthHeader(Map<String, dynamic> params) {
 }
 
 /// send http request
-Future<Map<String, dynamic>>? httpPost(
+Future<Map<String, dynamic>> httpPost(
   String url,
   Map<String, dynamic> params,
   String apiKey,
@@ -45,7 +45,7 @@ Future<Map<String, dynamic>>? httpPost(
     final http.Client _httpClient = http.Client();
     final http.Response res = await _httpClient.post(
       Uri.parse(url),
-      headers: <String, String>{'Authorization': header!},
+      headers: <String, String>{'Authorization': header},
     );
     if (res.statusCode != 200) {
       throw HttpException("Failed ${res.reasonPhrase}");
@@ -78,7 +78,7 @@ Future<Map<String, dynamic>> httpGet(
     final http.Client _httpClient = http.Client();
     final http.Response res = await _httpClient.get(
       Uri.parse(url),
-      headers: <String, String>{'Authorization': header!},
+      headers: <String, String>{'Authorization': header},
     );
     if (res.statusCode != 200) {
       throw HttpException("Failed ${res.reasonPhrase}");
@@ -90,11 +90,11 @@ Future<Map<String, dynamic>> httpGet(
   }
 }
 
-Map<String, String?> requestHeader({
-  String? apiKey,
-  String? oauthToken = '',
-  String? redirectURI = '',
-  String? oauthVerifier = '',
+Map<String, String> requestHeader({
+  String apiKey,
+  String oauthToken = '',
+  String redirectURI = '',
+  String oauthVerifier = '',
 }) {
   final dtNow = DateTime.now().millisecondsSinceEpoch;
   final params = {
