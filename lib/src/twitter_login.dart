@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:twitter_login/entity/auth_result.dart';
 import 'package:twitter_login/entity/user.dart';
@@ -34,14 +35,17 @@ class TwitterLogin {
 
   static const _channel = const MethodChannel('twitter_login');
   static final _eventChannel = EventChannel('twitter_login/event');
-  static final Stream<dynamic> _eventStream = _eventChannel.receiveBroadcastStream();
+  static final Stream<dynamic> _eventStream =
+      _eventChannel.receiveBroadcastStream();
 
   /// constructor
   TwitterLogin({
-    this.apiKey,
-    this.apiSecretKey,
-    this.redirectURI,
-  });
+    @required this.apiKey,
+    @required this.apiSecretKey,
+    @required this.redirectURI,
+  })  : assert(apiKey != null),
+        assert(apiSecretKey != null),
+        assert(redirectURI != null);
 
   /// Logs the user
   /// Forces the user to enter their credentials to ensure the correct users account is authorized.
