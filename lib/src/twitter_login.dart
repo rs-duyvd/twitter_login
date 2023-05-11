@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:twitter_login/entity/auth_result.dart';
 import 'package:twitter_login/entity/user.dart';
 import 'package:twitter_login/schemes/access_token.dart';
@@ -33,6 +34,9 @@ class TwitterLogin {
   /// Callback URL
   final String redirectURI;
 
+  /// Fallback browser
+  final InAppBrowser browserFallback;
+
   static const _channel = const MethodChannel('twitter_login');
   static final _eventChannel = EventChannel('twitter_login/event');
   static final Stream<dynamic> _eventStream =
@@ -43,9 +47,11 @@ class TwitterLogin {
     @required this.apiKey,
     @required this.apiSecretKey,
     @required this.redirectURI,
+    @required this.browserFallback,
   })  : assert(apiKey != null),
         assert(apiSecretKey != null),
-        assert(redirectURI != null);
+        assert(redirectURI != null),
+        assert(browserFallback != null);
 
   /// Logs the user
   /// Forces the user to enter their credentials to ensure the correct users account is authorized.
@@ -73,6 +79,7 @@ class TwitterLogin {
           }
         });
         final browser = ChromeCustomTab(
+          this.browserFallback,
           onClose: () {
             if (!completer.isCompleted) {
               completer.complete(null);

@@ -6,10 +6,14 @@ class ChromeCustomTab extends ChromeSafariBrowser {
 
   final Function onClose;
 
+  /// Fallback brwoser
+  final InAppBrowser browserFallback;
+
   /// constructor
-  ChromeCustomTab({
+  ChromeCustomTab(
+    this.browserFallback, {
     this.onClose,
-  }) : super();
+  }) : super(bFallback: browserFallback);
 
   @override
   void onClosed() => onClose.call();
